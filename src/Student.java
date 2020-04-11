@@ -23,6 +23,7 @@ public class Student implements Cloneable{
 
     @Override
     public String toString() {
+        System.out.println("typ0");
         return "Student{" +
                 "name='" + name + '\'' +
                 '}';
