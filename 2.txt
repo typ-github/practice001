@@ -1,0 +1,92 @@
+我们组负责的有商品管理模块和商品详情模块
+商品管理模块：
+
+
+商品详情模块：
+
+商品详情页主要用到的技术除了springmvc ， spring和mybatis之外还有 freemaker+activemq+nginx
+freemarker是一个Java编写的模板引擎 ， 用来作为详情页的模板我们用的是ftl格式的
+activemq这个中间件是用来在商品发布之后经过商品管理模块审核通过后将审核通过的商品id发布到mq中
+一旦检测到有新的id  即去生成对应的页面 
+我们的页面直接用商品的id命名而id的定义用的是雪花片法工具类生成全局唯一的id
+生成好的商品详情页保存的路径设置为nginx服务器的主机地址和端口号制定好目录就可以了
+
+
+
+项目中怎么使用freemarker的？freemarker的指令有哪些？
+我们用的是ftl格式的  ftl的指令前面都带#  通用的插值格式是#{} 
+基础的字符输出${goods.name?ifexist}   ?defult("xxx")如果不存在用默认值
+	字符串的常用内部函数  ？substring(0,5)  ?trim  去掉前后空格   ？index_of("x")  制定索引
+日期输出
+	指定格式输出：${goods.date?string("yyyy-MM-dd")}
+数字输出 经常用到一些转换函数
+	？string.number    20   ?string.currency  20.00   ?string.percent  20%
+
+
+<#assign x= x>  用来定义
+
+判断
+<#if  条件>
+	<#elseif  条件>
+	<#elseif  条件2>
+<#if  >
+
+不为空判断
+<#if list??><#if>
+循环
+
+<#list  集合名字  as  遍历的元素>
+中间用取值
+<#list>
+
+注释  <#--         -->
+
+
+
+activemq长用来系统业务模块之间的解耦  比如在我们的项目中商品审核模块交给商品管理模块  但是同时发布消息到mq
+由生成页面模块捕获 该模块进行生成  各自工作互不干扰
+activemq有两大部分组成  分别是生产者和消费者
+消息推送的方式也有两种
+1.点对点的传输，一个生产者一个消费者  生产者推送消息时不要求消费者在线  消费者一上线就会监听到消息
+2.发布/订阅的模式  类似于公众号  可以有多个消费者  但是要求生产者发布消息时消费者必须在线  否则将错过  即可理解为不能查看历史消息
+
+常用的消息类型有TextMessage、MapMessage、ObjectMessage
+
+发送消息需要实现    jmstemplate对象.send(destination，new MessageCreator(){
+	
+})方法
+接受消息定义一个类实现MessageListener 接口  实现里面的onMessage（） 方法
+
+
+
+nginx是一款轻量级的web服务器  可以实现的功能有反向代理  负载均衡  动静分离
+我们正常的向服务器发送请求就叫做正向代理  有了反向代理之后我们向nginx发送请求  nginx再将请求转发到服务器处理
+
+负载均衡：如果所有的服务器的处理能力相差不多就直接默认轮询机制就可以了  但是由于一些硬件的原因我们的服务器的处理
+能力不同就可以采取配置权重的方式  权重越高给分配的处理请求的任务就越多
+我知道的还有两种策略  IP_hash  用于根据请求的ip  同一个ip发送的请求交给同一个服务器  可以接君session跨服务器的问题
+最后一个least_conn用于将最请求分发给 最空闲的服务器
+
+
+在我这个模块用nginx作为静态资源服务器  事先在linux配置之后生成  各种文件夹  例如 h5 css js  img等等  不同的静态资源放在不同的文件夹中
+相互引用时用相对路径绝对路径都可以  
+将我们生成好的页面通过nginx服务器的IP和端口号  生成在指定目录
+
+
+
+
+
+
+
+
+Ｓ玫南⒗嘈陀蠺extMessage、MapMessage、ObjectMessage
+
+发送消息需要实现    jmstemplate对象.send(destination，new MessageCreator(){
+	
+})方法
+接受消息定义一个类实现MessageListener 接口  实现里面的onMessage（） 方法
+
+
+
+nginx是一款轻量级的web服务器  可以实现的功能有反向代理  负载均衡  动静分离
+我们正常的向服务器发送请求就叫做正向代理  有了反向代理之后我们
