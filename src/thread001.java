@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class thread001 {
 
-    Map map  = new HashMap<String,String>();
+    Map map = new HashMap<String, String>();
 
     List<String> list = Collections.synchronizedList(new ArrayList<>());
 

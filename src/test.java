@@ -18,11 +18,11 @@ public class test {
             FileOutputStream out = new FileOutputStream("C:\\Users\\28950\\Desktop\\简历\\2.txt");
 
             int len = 0;
-            byte[] b  = new byte[1024];
+            byte[] b = new byte[1024];
 
-            while((len=inputStream.read(b))!=-1){
+            while ((len = inputStream.read(b)) != -1) {
 
-                out.write(b,0,b.length);
+                out.write(b, 0, b.length);
 
             }
 
@@ -31,7 +31,7 @@ public class test {
 
 
             Integer a = null;
-            switch (a){
+            switch (a) {
                 case 1:
                     break;
                 default:
@@ -44,7 +44,6 @@ public class test {
 
 
     }
-
 
 
 }
